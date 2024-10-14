@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>全国人数统计</title>
+    <style>
+      table,
+      th,
+      td {
+        border-collapse: collapse;
+        border: 1px solid #ccc;
+      }
+      tbody {
+        overflow: auto;
+      }
+      #chart-container {
+        position: relative;
+        height: 80vh;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div id="chart-container"></div>
+    </div>
+    <script src="https://registry.npmmirror.com/echarts/5.5.1/files/dist/echarts.min.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
