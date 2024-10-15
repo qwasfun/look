@@ -2,6 +2,13 @@ import axios from "axios";
 import fs from "node:fs";
 import { exec } from "node:child_process";
 
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
+// https://stackoverflow.com/questions/46745014/alternative-for-dirname-in-node-js-when-using-es6-modules
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 const date = new Date();
 
 let month = date.getMonth() + 1;
@@ -18,13 +25,19 @@ const dateStr = date.getFullYear() + "-" + month + "-" + day;
 
 async function codeUpdate() {
   return new Promise((resolve, rejects) => {
-    exec("git fetch && git reset --hard origin/main", (err) => {
-      if (err) {
-        rejects(err);
+    exec(
+      "git fetch && git reset --hard origin/main",
+      {
+        cwd: __dirname,
+      },
+      (err) => {
+        if (err) {
+          rejects(err);
+        }
+        console.log("codeUpdate 执行成功");
+        resolve();
       }
-      console.log("codeUpdate 执行成功");
-      resolve();
-    });
+    );
   });
 }
 
@@ -57,6 +70,9 @@ function saveToFile(data) {
     // git push
     exec(
       `git commit -am "update ${dateStr}" && git push origin main`,
+      {
+        cwd: __dirname,
+      },
       (error, stdout, stderr) => {
         if (error) {
           return console.error(error);
@@ -69,7 +85,7 @@ function saveToFile(data) {
 
 (async () => {
   try {
-    await codeUpdate()
+    await codeUpdate();
     await scrapeAndSave();
     console.log("任务完成");
   } catch (error) {
